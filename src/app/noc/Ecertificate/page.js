@@ -3,22 +3,28 @@
 import '../../../styles/firstPage.css'
 import Button from "./Button";
 import { useSearchParams,useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { Suspense,useEffect } from "react";
 
-export default function Home() {
-  const searchParams = useSearchParams();
+function EcertificatePageContent() {
   const router = useRouter();
-  
-  useEffect(()=>{
-    const q = searchParams.get('q');
-    console.log(q);
-    
-    if(!q){
-      router.push('?q=NPTEL25CS75S24310149804466796');
+  const searchParams = useSearchParams();
+  const q = searchParams.get('q');
+
+  useEffect(() => {
+    if (!q) {
+      router.replace('/noc/Ecertificate?q=NPTEL25CS75S24310149804466796');
     }
-  },[searchParams,router])
+  }, [q, router]);
 
   return (
     <Button/>
+  );
+}
+
+export default function EcertificatePage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <EcertificatePageContent />
+    </Suspense>
   );
 }
